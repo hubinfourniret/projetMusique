@@ -1,10 +1,18 @@
 <script setup>
+import {ref, toValue} from "vue";
+
 defineProps({
   msg: {
     type: String,
     required: true,
   },
 })
+
+const disabled = ref(false);
+const test = ref(0);
+const blockLeave = () => {
+  disabled.value = !disabled.value;
+};
 </script>
 
 <template>
@@ -14,6 +22,7 @@ defineProps({
       You’ve successfully created a project with
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+      <button v-on:click="blockLeave()">test disable {{disabled}}</button>
     </h3>
   </div>
 </template>
