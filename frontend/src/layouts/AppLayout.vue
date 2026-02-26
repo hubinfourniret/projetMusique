@@ -9,11 +9,11 @@ if (!username) router.push('/login');
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-base-200">
+  <div class="w-full flex flex-col min-h-screen bg-base-200">
 
     <NavBar :username="username" />
 
-    <main class="flex-1 overflow-y-auto pb-24 px-3 py-4">
+    <main class=" flex-1 overflow-y-auto pb-24 px-3 py-4">
       <RouterView />
     </main>
 
