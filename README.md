@@ -1,4 +1,4 @@
-# projetMusique
+# Projet Musique
 
 Monorepo npm avec:
 - `frontend`: Vue + Vite
@@ -15,16 +15,23 @@ npm install
 ```sh
 # Frontend (Vite)
 npm run dev:front
-
+```
+```sh
 # Backend (Express)
 npm run dev:back
-
+```
+```sh
 # Build frontend
 npm run build
-
+```
+```sh
 # Lancer le backend en mode start
 npm run start
 ```
+Frontend :
+
+`css` : tailwing → daisyui
+
 
 Backend :
 
