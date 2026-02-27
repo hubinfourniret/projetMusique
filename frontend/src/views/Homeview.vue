@@ -1,11 +1,7 @@
 <script setup>
-
+import Search from "@/components/Search.vue";
 </script>
 
 <template>
-<h2>test</h2>
+  <Search/>
 </template>
-
-<style scoped>
-
-</style>

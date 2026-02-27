@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 left-0 right-0 z-50 bg-base-100 border-t border-base-300">
+  <div class="w-full bg-base-100 border-t border-base-300">
     <div class="px-3 py-2">
 
       <div class="flex items-center justify-between gap-2">
@@ -70,4 +70,8 @@ const currentSong = ref({
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
 function previous() { console.log('Précédent → Pi') }
+
+defineProps({
+  musique: { type: String }
+})
 </script>
