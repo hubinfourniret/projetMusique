@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import { searchTracks } from '../services/musicService.js'
+import { searchTracks } from '@/services/musicService'
+import type { Song } from '@/types/song'
 
 const query = ref('')
-const results = ref([])
+const results = ref<Song[]>([])
 const loading = ref(false)
 let debounceTimer = null
 
