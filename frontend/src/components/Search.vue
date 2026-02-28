@@ -2,17 +2,13 @@
 import { ref } from 'vue'
 import { searchTracks } from '@/services/musicService'
 import type { Song } from '@/types/song'
+import { setCurrentSong } from '@/services/musicService'
 
 const query = ref('')
 const results = ref<Song[]>([])
 const loading = ref(false)
 let debounceTimer = null
-const props = defineProps({
-  onSelect: {
-    type: Function,
-    required: true,
-  }
-})
+
 
 function onSearch() {
   clearTimeout(debounceTimer)
@@ -60,7 +56,7 @@ function addToNext(track) {
           v-for="track in results"
           :key="track.id"
           class="flex items-center gap-3 bg-base-100 rounded-xl p-3 active:scale-95 transition cursor-pointer"
-          @click="addToQueue(track);props.onSelect(track)"
+          @click="addToQueue(track);setCurrentSong(track)"
 
       >
         <img

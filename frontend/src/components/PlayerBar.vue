@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import router from "@/router/index.js";
+import { currentSong } from "@/services/musicService.js";
 
 
 const isPlaying = ref(false)
@@ -7,17 +9,12 @@ const volume = ref(70)
 const progress = ref(35)
 const currentTime = ref('1:12')
 const duration = ref('3:24')
-const props = defineProps({
-  musique: {
-    type: Object,
-    default: null,
-  }
-})
+
+
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
 function previous() { console.log('Précédent → Pi') }
-
 
 
 </script>
@@ -26,23 +23,23 @@ function previous() { console.log('Précédent → Pi') }
   <div class="w-full bg-base-100 border-t border-base-300">
     <div class="px-3 py-2">
 
-      <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center justify-between gap-2 ">
 
-        <div class="flex items-center gap-2 flex-1 min-w-0">
-          <div v-if="props.musique">
+        <div class="flex items-center gap-2 flex-1 min-w-0" @click="router.push('/focus')">
+          <div v-if="currentSong">
             <img
-                :src="props.musique ? props.musique.cover : null"
-                :alt="props.musique ? props.musique.title : null"
+                :src="currentSong ? currentSong.cover : null"
+                :alt="currentSong ? currentSong.title : null"
                 class="w-12 h-12 rounded-lg object-cover shrink-0"
             />
           </div>
           <div class="min-w-0 flex flex-col gap-2">
 
             <p class="font-semibold text-sm truncate leading-tight">
-              {{ props.musique ? props.musique.title : 'title' }}
+              {{ currentSong ? currentSong.title : 'title' }}
             </p>
             <p class="text-xs text-base-content/60 truncate">
-              {{ props.musique ? props.musique.artist : 'artist' }}
+              {{ currentSong ? currentSong.artist : 'artist' }}
             </p>
           </div>
         </div>
@@ -66,7 +63,7 @@ function previous() { console.log('Précédent → Pi') }
         <input
             v-model="volume"
             type="range" min="0" max="100"
-            class="range range-primary range-xs flex-1"
+            class="range range-primary range-xs h-1 flex-1"
         />
         <span class="text-sm">🔊</span>
       </div>

@@ -9,11 +9,6 @@ const username = getCookie('username')
 if (!username) router.push('/login');
 
 
-const currentSong = ref(null)
-
-function setCurrentSong(track) {
-  currentSong.value = track;
-}
 
 </script>
 
@@ -23,10 +18,10 @@ function setCurrentSong(track) {
     <NavBar :username="username" />
 
     <main class="flex-1 overflow-y-auto px-3 py-4">
-      <RouterView :setCurrentSong="setCurrentSong" />
+      <RouterView />
     </main>
 
-    <PlayerBar :musique="currentSong" />
+    <PlayerBar/>
 
   </div>
 </template>
