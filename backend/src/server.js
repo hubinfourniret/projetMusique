@@ -1,5 +1,10 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express'
+import cors from 'cors'
+import { initWebSocket } from './websocket.js'
+import trackRouter from './routes/track.js'
+import searchRouter from './routes/search.js'
+import votesRouter from './routes/votes.js'
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,9 +12,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/search', require('./routes/search.js'))
-app.use('/api/votes', require('./routes/votes.js'));
+app.use('/api/search', searchRouter)
+app.use('/api/votes', votesRouter);
+app.use('/api/track', trackRouter);
 
-app.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
-});
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+
+initWebSocket(server)

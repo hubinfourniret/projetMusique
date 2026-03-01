@@ -8,6 +8,18 @@ export async function searchTracks(query) {
     return res.json()
 }
 
+export async function add(songId) {
+    const res = await fetch(`${API_URL}/api/track/add?q=${encodeURIComponent(songId)}`)
+    if (!res.ok) throw new Error("Erreur d'ajout")
+    return res.json()
+}
+
+export async function addNext(songId) {
+    const res = await fetch(`${API_URL}/api/track/addNext?q=${encodeURIComponent(songId)}`)
+    if (!res.ok) throw new Error("Erreur d'ajout")
+    return res.json()
+}
+
 export const currentSong = ref(null)
 
 export function setCurrentSong(track) {

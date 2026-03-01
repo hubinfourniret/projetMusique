@@ -1,4 +1,4 @@
-const express = require('express')
+import express from "express";
 const router = express.Router()
 
 router.get('', async (req, res) => {
@@ -12,7 +12,6 @@ router.get('', async (req, res) => {
         )
         const data = await response.json()
 
-        // On ne retourne que ce qui est utile
         const tracks = data.data.map(track => ({
             id: track.id,
             title: track.title,
@@ -29,6 +28,6 @@ router.get('', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router
 
 

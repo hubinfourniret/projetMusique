@@ -1,14 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
-import { searchTracks } from '@/services/musicService'
-import type { Song } from '@/types/song'
-import { setCurrentSong } from '@/services/musicService'
+import {add, addNext, searchTracks} from '@/services/musicService'
 
 const query = ref('')
-const results = ref<Song[]>([])
+const results = ref([])
 const loading = ref(false)
 let debounceTimer = null
-
 
 function onSearch() {
   clearTimeout(debounceTimer)
@@ -29,11 +26,20 @@ function onSearch() {
 }
 
 //A Faire apres
-function addToQueue(track) {
-  console.log('Ajouter à la file :', track.title)
+async function addToQueue(track) {
+  try {
+    results.value = await add(track)
+  } catch (e) {
+    console.error(e)
+  }
 }
-function addToNext(track) {
-  console.log('Ajouter à la file :', track.title)
+
+async function addToNext(track) {
+  try {
+    results.value = await addNext(track)
+  } catch (e) {
+    console.error(e)
+  }
 }
 </script>
 
@@ -56,8 +62,7 @@ function addToNext(track) {
           v-for="track in results"
           :key="track.id"
           class="flex items-center gap-3 bg-base-100 rounded-xl p-3 active:scale-95 transition cursor-pointer"
-          @click="addToQueue(track);setCurrentSong(track)"
-
+          @click="addToQueue(track.id)"
       >
         <img
             :src="track.cover"
