@@ -26,17 +26,17 @@ function onSearch() {
 }
 
 //A Faire apres
-async function addToQueue(track) {
+async function addToQueue(id) {
   try {
-    results.value = await add(track)
+    await add(id)
   } catch (e) {
     console.error(e)
   }
 }
 
-async function addToNext(track) {
+async function addToNext(id) {
   try {
-    results.value = await addNext(track)
+    await addNext(id)
   } catch (e) {
     console.error(e)
   }

@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import {computed, reactive, ref, watch} from 'vue'
 import router from "@/router/index.js";
-import { currentSong } from "@/services/musicService.js";
+import {useQueueStore} from "@/stores/queueStore.js";
 
 
 const isPlaying = ref(false)
@@ -9,14 +9,17 @@ const volume = ref(70)
 const progress = ref(35)
 const currentTime = ref('1:12')
 const duration = ref('3:24')
+const queue = useQueueStore()
 
+watch(() => queue.queue.length, () => {
+  console.log('Nouvelle longueur :')
+})
 
+const currentSong = computed(() => queue.queue.at(-1) ?? null)
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
 function previous() { console.log('Précédent → Pi') }
-
-
 </script>
 
 <template>

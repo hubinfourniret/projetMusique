@@ -17,8 +17,8 @@ router.get('', async (req, res) => {
             title: track.title,
             artist: track.artist.name,
             album: track.album.title,
-            cover: track.album.cover_medium,   // image pochette
-            preview: track.preview,            // extrait 30s MP3
+            cover: track.album.cover_medium,
+            preview: track.preview,
             duration: track.duration
         }))
 
