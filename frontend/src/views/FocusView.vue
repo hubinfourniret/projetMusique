@@ -1,8 +1,9 @@
 <script setup>
 import {computed, ref} from 'vue'
 import router from "@/router/index.js";
-
 import {useQueueStore} from "@/stores/queueStore.js";
+import QueueIcon from "@/components/Icons/QueueIcon.vue";
+
 
 
 const isPlaying = ref(false)
@@ -71,7 +72,7 @@ function previous() { console.log('Précédent → Pi') }
           </button>
           <button class="btn btn-ghost btn-circle text-2xl" @click="next">⏭</button>
           <div class="flex items-center gap-3 shrink-0 fab fab-flower">
-            <button class="btn btn-ghost btn-circle btn-sm">☰</button>
+            <button class="btn btn-ghost btn-circle btn-sm" @click="router.push('/ListView')"><QueueIcon/></button>
           </div>
         </div>
       </div>

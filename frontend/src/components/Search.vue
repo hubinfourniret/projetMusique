@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import {add, addNext, searchTracks} from '@/services/musicService'
+import IconsList from "@/components/Icons/IconsList.vue";
 
 const query = ref('')
 const results = ref([])
@@ -47,7 +48,7 @@ function checkAdd(){
 </script>
 
 <template>
-  <div class="flex flex-col gap-4" @click="isOpen = !isOpen">
+  <div class="flex flex-col gap-4" @click="isOpen = null">
     <label class="input input-bordered flex items-center gap-2 w-full">
       🔍
       <input
@@ -84,33 +85,12 @@ function checkAdd(){
           <div v-if="openMenuId === track.id && isOpen === track.id"
                class="absolute right-full mr-2 top-1/2 -translate-y-1/2 flex flex-col gap-2"
           >
-            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="add(track); isOpen = null;checkAdd()">
-              <span class="flex items-start gap-0.5 text-white">
-
-                <span
-                  class="w-0 h-0 border-t-3px border-b-3px border-l-4px border-t-transparent border-b-transparent border-l-white"
-                ></span>
-
-                <span class="flex flex-col gap-2px">
-                  <span class="w-3 h-3px bg-white rounded-full"></span>
-                  <span class="w-3 h-1px bg-white rounded-full"></span>
-                  <span class="w-3 h-1px bg-white rounded-full"></span>
-                </span>
-              </span>
+            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="addNext(track.id); isOpen = null;openMenuId = null;checkAdd()">
+              <IconsList :debutList="true"/>
             </button>
-            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="addNext(track); isOpen = null;checkAdd()">
-              <span class="flex items-end gap-0.5 text-white">
 
-                <span
-                    class="w-0 h-0 border-t-[3px] border-b-[3px] border-l-4px border-t-transparent border-b-transparent border-l-white"
-                ></span>
-
-                <span class="flex flex-col gap-2px">
-                  <span class="w-3 h-1px bg-white rounded-full"></span>
-                  <span class="w-3 h-1px bg-white rounded-full"></span>
-                  <span class="w-3 h-3px bg-white rounded-full"></span>
-                </span>
-              </span>
+            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="add(track.id); isOpen = null;openMenuId = null;checkAdd()">
+              <IconsList />
             </button>
 
           </div>
@@ -119,7 +99,7 @@ function checkAdd(){
 
       </div>
     </div>
-    <div v-if="check === true" class="fab fab-flower translate-y--75px translate-x--10px">
+    <div v-if="check === true" class="fab fab-flower translate-y-[-75px] translate-x-[-10px]">
       <div class="px-4 py-1 rounded-xl bg-base-200 text-sm shadow-lg">
         music added to list !
       </div>
