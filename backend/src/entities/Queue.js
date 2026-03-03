@@ -1,3 +1,4 @@
+import { broadcastQueue, broadcastPlay, broadcastStop } from '../websocket.js'
 class Queue {
     constructor(data = {}) {
         this._queue = data._queue || []
@@ -13,10 +14,16 @@ class Queue {
 
     add(song) {
         this._queue.push(song)
+        if (this._queue.length === 0) {
+            broadcastPlay(this.current)
+        }
     }
 
     addNext(song) {
         this._queue.splice(1, 0, song)
+        if (this._queue.length === 0) {
+            broadcastPlay(this.current)
+        }
     }
 
     remove(songId) {
@@ -25,6 +32,11 @@ class Queue {
 
     next() {
         this._queue.shift()
+        if (this.current) {
+            broadcastPlay(this.current)
+        } else {
+            broadcastStop()
+        }
         return this.current
     }
 

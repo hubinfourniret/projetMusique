@@ -1,33 +1,42 @@
-import express from "express";
-const router = express.Router()
+import express from 'express';
+import { getFreshToken } from './auth.js';
 
-router.get('', async (req, res) => {
-    const { q } = req.query
+const router = express.Router();
 
-    if (!q) return res.status(400).json({ error: 'Paramètre q requis' })
+router.get('/', async (req, res) => {
+    const { q } = req.query;
+    if (!q) return res.status(400).json({ error: 'Paramètre q requis' });
 
     try {
+        const token = await getFreshToken();
+
         const response = await fetch(
-            `https://api.deezer.com/search?q=${encodeURIComponent(q)}&limit=20`
-        )
-        const data = await response.json()
+            `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=10&market=FR`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
 
-        const tracks = data.data.map(track => ({
+        const data = await response.json();
+
+        console.log("data", data);
+
+        const tracks = data.tracks.items.map(track => ({
             id: track.id,
-            title: track.title,
-            artist: track.artist.name,
-            album: track.album.title,
-            cover: track.album.cover_medium,
-            preview: track.preview,
-            duration: track.duration
-        }))
+            title: track.name,
+            artist: track.artists[0].name,
+            album: track.album.name,
+            cover: track.album.images[0]?.url,
+            preview: track.preview_url,
+            duration: track.duration_ms,
+            uri: track.uri,
+        }));
 
-        res.json(tracks)
+        res.json(tracks);
     } catch (err) {
-        res.status(500).json({ error: 'Erreur Deezer API' })
+        console.error(err);
+        res.status(500).json({ error: 'Erreur Spotify API' });
     }
-})
+});
 
-export default router
-
-
+export default router;

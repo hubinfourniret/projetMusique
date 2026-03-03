@@ -1,24 +1,43 @@
 <script setup>
 import { onMounted } from 'vue'
 
-onMounted(() => {
-  DZ.init({
-    appId: 'TON_APP_ID',
-    channelUrl: 'http://localhost:5173/channel.html',
-  })
+onMounted(async () => {
+  const res = await fetch('http://localhost:3000/auth/token')
+  const { access_token } = await res.json()
 
-  const ws = new WebSocket('ws://localhost:3000')
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const player = new Spotify.Player({
+      name: 'Raspberry Player',
+      getOAuthToken: cb => cb(access_token),
+      volume: 0.8
+    })
 
-  ws.onmessage = (event) => {
-    const { type, song } = JSON.parse(event.data)
+    player.connect()
 
-    if (type === 'PLAY') DZ.player.playTracks([song.id])
-    if (type === 'NEXT') DZ.player.next()
-    if (type === 'PAUSE') DZ.player.pause()
+    const ws = new WebSocket('ws://localhost:3000')
+
+    ws.onmessage = (event) => {
+      const { type, song } = JSON.parse(event.data)
+
+      if (type === 'PLAY') {
+        fetch(`https://api.spotify.com/v1/me/player/play`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ uris: [`spotify:track:${song.id}`] })
+        })
+      }
+
+      if (type === 'NEXT') player.nextTrack()
+      if (type === 'PAUSE') player.pause()
+      if (type === 'RESUME') player.resume()
+    }
   }
 })
 </script>
 
 <template>
-  <div id="dz-root"></div>
+  <div></div>
 </template>

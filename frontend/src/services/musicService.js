@@ -8,15 +8,30 @@ export async function searchTracks(query) {
     return res.json()
 }
 
-export async function add(songId) {
-    const res = await fetch(`${API_URL}/api/track/add?id=${songId}`)
+export async function add(track) {
+    const res = await fetch(`${API_URL}/api/track/add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ track }),
+    })
     if (!res.ok) throw new Error("Erreur d'ajout")
     return res.json()
 }
 
-export async function addNext(songId) {
-    const res = await fetch(`${API_URL}/api/track/addNext?id=${songId}`)
+export async function addNext(track) {
+    const res = await fetch(`${API_URL}/api/track/addNext`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ track }),
+    })
     if (!res.ok) throw new Error("Erreur d'ajout")
     return res.json()
 }
 
+export async function removeTrack(trackId) {
+    const res = await fetch(`${API_URL}/api/track/delete?id=${trackId}`, {
+        method: 'DELETE',
+    })
+    if (!res.ok) throw new Error('Erreur suppression')
+    return res.json()
+}

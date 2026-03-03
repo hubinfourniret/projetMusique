@@ -11,10 +11,22 @@ export function initWebSocket(server) {
 }
 
 // (1 = OPEN, 0 = CONNECTING, 2 = CLOSING, 3 = CLOSED)
-export function broadcastQueue(queue) {
+function broadcast(data) {
     wss.clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'QUEUE_UPDATE', queue }))
+            client.send(JSON.stringify(data))
         }
     })
+}
+
+export function broadcastPlay(song) {
+    broadcast({ type: 'PLAY', song })
+}
+
+export function broadcastStop() {
+    broadcast({ type: 'STOP' })
+}
+
+export function broadcastQueue(queue) {
+    broadcast({ type: 'QUEUE_UPDATE', queue })
 }

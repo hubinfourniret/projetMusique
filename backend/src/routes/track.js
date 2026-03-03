@@ -1,85 +1,60 @@
 import express from 'express'
 import Queue from '../entities/Queue.js'
 import { broadcastQueue } from '../websocket.js'
+import {getFreshToken} from "./auth.js";
 
 const router = express.Router()
 
-router.get('/add', async (req, res) => {
-    const { id } = req.query
+async function spotifyQueue(uri) {
+    const token = await getFreshToken()
+    await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(uri)}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+    })
+}
 
-    if (!id) return res.status(400).json({ error: 'Paramètre requis' })
+router.post('/add', async (req, res) => {
+    const { track } = req.body
+    if (!track?.uri) return res.status(400).json({ error: 'Track invalide' })
 
     try {
-        const response = await fetch(`https://api.deezer.com/track/${id}`)
-        const data = await response.json()
-        console.log(data)
-        const track = {
-            id: data.id,
-            title: data.title,
-            artist: data.artist.name,
-            album: data.album.title,
-            cover: data.album.cover_medium,
-            preview: data.preview,
-            duration: data.duration
-        }
         Queue.add(track)
-        console.log(Queue.all)
+        await spotifyQueue(track.uri)
         broadcastQueue(Queue.all)
         res.json({ success: true })
     } catch (err) {
-        res.status(500).json({ error: 'Erreur mauvais format' })
+        console.error(err)
+        res.status(500).json({ error: "Erreur lors de l'ajout" })
     }
 })
 
-router.get('/addNext', async (req, res) => {
-    const { id } = req.query
-
-    if (!id) return res.status(400).json({ error: 'Paramètre q requis' })
+router.post('/addNext', async (req, res) => {
+    const { track } = req.body
+    if (!track?.uri) return res.status(400).json({ error: 'Track invalide' })
 
     try {
-        const response = await fetch(`https://api.deezer.com/track/${id}`)
-        const data = await response.json()
-
-        const track = {
-            id: data.id,
-            title: data.title,
-            artist: data.artist.name,
-            album: data.album.title,
-            cover: data.album.cover_medium,
-            preview: data.preview,
-            duration: data.duration
-        }
         Queue.addNext(track)
+        await spotifyQueue(track.uri)
+
         broadcastQueue(Queue.all)
         res.status(200).json({ success: true })
     } catch (err) {
-        res.status(500).json({ error: 'Erreur Deezer API' })
+        console.error(err)
+        res.status(500).json({ error: "Erreur lors de l'ajout" })
     }
 })
 
-router.delete('/delete', async (req, res) => {
-    const { q } = req.query
-
-    if (!q) return res.status(400).json({ error: 'Paramètre q requis' })
+router.delete('/delete', (req, res) => {
+    const { id } = req.query
+    if (!id) return res.status(400).json({ error: 'Paramètre id requis' })
 
     try {
-        const track = {
-            id: q.id,
-            title: q.title,
-            artist: q.artist.name,
-            album: q.album.title,
-            cover: q.album.cover_medium,
-            preview: q.preview,
-            duration: q.duration
-        }
-        Queue.remove(track)
+        Queue.remove(id)
         broadcastQueue(Queue.all)
         res.json({ success: true })
     } catch (err) {
-        res.status(500).json({ error: 'Erreur mauvais format' })
+        res.status(500).json({ error: 'Erreur suppression' })
     }
 })
-
-
 
 export default router

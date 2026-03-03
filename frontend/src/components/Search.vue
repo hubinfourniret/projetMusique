@@ -44,22 +44,6 @@ function checkAdd(){
   setTimeout(()=>{check.value = false},5000)
 }
 
-//A Faire apres
-async function addToQueue(id) {
-  try {
-    await add(id)
-  } catch (e) {
-    console.error(e)
-  }
-}
-
-async function addToNext(id) {
-  try {
-    await addNext(id)
-  } catch (e) {
-    console.error(e)
-  }
-}
 </script>
 
 <template>
@@ -100,7 +84,7 @@ async function addToNext(id) {
           <div v-if="openMenuId === track.id && isOpen === track.id"
                class="absolute right-full mr-2 top-1/2 -translate-y-1/2 flex flex-col gap-2"
           >
-            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="add(track.id); isOpen = null;checkAdd()">
+            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="add(track); isOpen = null;checkAdd()">
               <span class="flex items-start gap-0.5 text-white">
 
                 <span
@@ -114,7 +98,7 @@ async function addToNext(id) {
                 </span>
               </span>
             </button>
-            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="addNext(track.id); isOpen = null;checkAdd()">
+            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="addNext(track); isOpen = null;checkAdd()">
               <span class="flex items-end gap-0.5 text-white">
 
                 <span

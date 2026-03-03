@@ -18,7 +18,6 @@ function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
 function previous() { console.log('Précédent → Pi') }
 
-
 </script>
 
 <template>

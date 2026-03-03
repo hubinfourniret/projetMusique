@@ -3,6 +3,39 @@ import 'dotenv/config'
 
 const router = express.Router()
 
+let cachedToken = null
+let tokenExpiresAt = 0
+
+export async function getFreshToken() {
+    if (cachedToken && Date.now() < tokenExpiresAt - 60_000) {
+        return cachedToken
+    }
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: 'Basic ' + Buffer.from(
+                process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+            ).toString('base64'),
+        },
+        body: new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: process.env.SPOTIFY_REFRESH_TOKEN,
+        }),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok || !data.access_token) {
+        console.error('Spotify token error:', data)
+        throw new Error(`Impossible de rafraîchir le token Spotify : ${data.error_description ?? data.error}`)
+    }
+    cachedToken = data.access_token
+    tokenExpiresAt = Date.now() + data.expires_in * 1000
+    return cachedToken
+}
+
 // Étape 1 — Tu ouvres cette URL dans ton navigateur une seule fois
 router.get('/login', (req, res) => {
     const params = new URLSearchParams({
