@@ -22,7 +22,7 @@ function previous() { console.log('Précédent → Pi') }
 </script>
 
 <template>
-  <div class="w-full h-screen bg-base-100 border-t border-base-300">
+  <div class="w-full overflow-hidden h-screen bg-base-100 border-t border-base-300">
     <div class="min-h-screen flex flex-col bg-base-200">
       <div class="h-10 flex items-center ">
         <button class="btn btn-ghost btn-circle text-2xl" @click="router.push('/home')"><</button>
