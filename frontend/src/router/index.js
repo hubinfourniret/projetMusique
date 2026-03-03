@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
 import FocusView from "@/views/FocusView.vue";
 import RaspberryView from "@/views/RaspberryView.vue";
+import ListView from "@/views/ListView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -18,6 +19,9 @@ export default createRouter({
         },
         {path: "/focus", component: FocusView },
 
+        {path: "/ListView", component: ListView },
+
         {path: "/raspberry", component: RaspberryView },
+
     ]
 })
