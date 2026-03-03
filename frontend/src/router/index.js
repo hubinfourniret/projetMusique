@@ -17,6 +17,7 @@ export default createRouter({
             ]
         },
         {path: "/focus", component: FocusView },
+
         {path: "/raspberry", component: RaspberryView },
     ]
 })

@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import router from "@/router/index.js";
-import { currentSong } from "@/services/musicService.js";
+
+import {useQueueStore} from "@/stores/queueStore.js";
 
 
 const isPlaying = ref(false)
@@ -9,8 +10,9 @@ const volume = ref(70)
 const progress = ref(35)
 const currentTime = ref('1:12')
 const duration = ref('3:24')
+const queue = useQueueStore()
 
-
+const currentSong = computed(() => queue.queue.at(-1) ?? null)
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
@@ -69,6 +71,9 @@ function previous() { console.log('Précédent → Pi') }
             {{ isPlaying ? '⏸' : '▶' }}
           </button>
           <button class="btn btn-ghost btn-circle text-2xl" @click="next">⏭</button>
+          <div class="flex items-center gap-3 shrink-0 fab fab-flower">
+            <button class="btn btn-ghost btn-circle btn-sm">☰</button>
+          </div>
         </div>
       </div>
 
