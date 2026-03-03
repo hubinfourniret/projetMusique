@@ -20,8 +20,3 @@ export async function addNext(songId) {
     return res.json()
 }
 
-export const currentSong = ref(null)
-
-export function setCurrentSong(track) {
-    currentSong.value = track;
-}

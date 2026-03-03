@@ -6,6 +6,9 @@ const query = ref('')
 const results = ref([])
 const loading = ref(false)
 let debounceTimer = null
+const isOpen = ref(null)
+const openMenuId = ref(null)
+let check = ref(false)
 
 function onSearch() {
   clearTimeout(debounceTimer)
@@ -23,6 +26,22 @@ function onSearch() {
       loading.value = false
     }
   }, 400)
+}
+
+function toggleMenuId (trakId){
+  if(openMenuId.value === trakId){
+    openMenuId.value = null;
+    isOpen.value = null;
+  }
+  else{
+    openMenuId.value = trakId;
+    isOpen.value = trakId;
+  }
+
+}
+function checkAdd(){
+  check.value = true;
+  setTimeout(()=>{check.value = false},5000)
 }
 
 //A Faire apres
@@ -44,7 +63,7 @@ async function addToNext(id) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4" @click="isOpen = !isOpen">
     <label class="input input-bordered flex items-center gap-2 w-full">
       🔍
       <input
@@ -61,8 +80,7 @@ async function addToNext(id) {
       <div
           v-for="track in results"
           :key="track.id"
-          class="flex items-center gap-3 bg-base-100 rounded-xl p-3 active:scale-95 transition cursor-pointer"
-          @click="addToQueue(track.id)"
+          class="flex items-center gap-3 bg-base-100 rounded-xl p-3 "
       >
         <img
             :src="track.cover"
@@ -74,6 +92,52 @@ async function addToNext(id) {
           <p class="font-semibold text-sm truncate">{{ track.title }}</p>
           <p class="text-xs text-base-content/60 truncate">{{ track.artist }}</p>
         </div>
+        <div class="relative inline-block">
+          <button class="btn btn-ghost btn-circle text-xl" @click.stop="toggleMenuId(track.id)">
+            ☰
+          </button>
+
+          <div v-if="openMenuId === track.id && isOpen === track.id"
+               class="absolute right-full mr-2 top-1/2 -translate-y-1/2 flex flex-col gap-2"
+          >
+            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="add(track.id); isOpen = null;checkAdd()">
+              <span class="flex items-start gap-0.5 text-white">
+
+                <span
+                  class="w-0 h-0 border-t-[3px] border-b-[3px] border-l-[4px] border-t-transparent border-b-transparent border-l-white"
+                ></span>
+
+                <span class="flex flex-col gap-[2px]">
+                  <span class="w-3 h-[3px] bg-white rounded-full"></span>
+                  <span class="w-3 h-[1px] bg-white rounded-full"></span>
+                  <span class="w-3 h-[1px] bg-white rounded-full"></span>
+                </span>
+              </span>
+            </button>
+            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="addNext(track.id); isOpen = null;checkAdd()">
+              <span class="flex items-end gap-0.5 text-white">
+
+                <span
+                    class="w-0 h-0 border-t-[3px] border-b-[3px] border-l-[4px] border-t-transparent border-b-transparent border-l-white"
+                ></span>
+
+                <span class="flex flex-col gap-[2px]">
+                  <span class="w-3 h-[1px] bg-white rounded-full"></span>
+                  <span class="w-3 h-[1px] bg-white rounded-full"></span>
+                  <span class="w-3 h-[3px] bg-white rounded-full"></span>
+                </span>
+              </span>
+            </button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div v-if="check === true" class="fab fab-flower translate-y-[-75px] translate-x-[-10px]">
+      <div class="px-4 py-1 rounded-xl bg-base-200 text-sm shadow-lg">
+        music added to list !
       </div>
     </div>
 

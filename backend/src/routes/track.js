@@ -31,7 +31,7 @@ router.get('/add', async (req, res) => {
     }
 })
 
-router.post('/addNext', async (req, res) => {
+router.get('/addNext', async (req, res) => {
     const { id } = req.query
 
     if (!id) return res.status(400).json({ error: 'Paramètre q requis' })
