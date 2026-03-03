@@ -4,6 +4,7 @@ import { initWebSocket } from './websocket.js'
 import trackRouter from './routes/track.js'
 import searchRouter from './routes/search.js'
 import votesRouter from './routes/votes.js'
+import authRouter from './routes/auth.js'
 
 
 const app = express();
@@ -15,6 +16,8 @@ app.use(cors());
 app.use('/api/search', searchRouter)
 app.use('/api/votes', votesRouter);
 app.use('/api/track', trackRouter);
+app.use('/auth', authRouter)
+
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

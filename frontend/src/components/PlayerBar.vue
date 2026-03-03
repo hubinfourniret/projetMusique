@@ -60,27 +60,6 @@ function previous() { console.log('Précédent → Pi') }
         </div>
 
       </div>
-
-      <div class="hidden md:flex items-center gap-2 mt-2 px-1">
-        <span class="text-sm">🔇</span>
-        <input
-            v-model="volume"
-            type="range" min="0" max="100"
-            class="range range-primary range-xs h-1 flex-1"
-        />
-        <span class="text-sm">🔊</span>
-      </div>
-
-      <div class="flex items-center gap-2 mt-1 md:hidden">
-        <span class="text-xs text-base-content/50">{{ currentTime }}</span>
-        <progress
-            class="progress progress-primary flex-1 h-1"
-            :value="progress"
-            max="100"
-        ></progress>
-        <span class="text-xs text-base-content/50">{{ duration }}</span>
-      </div>
-
     </div>
   </div>
 </template>
