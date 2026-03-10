@@ -36,12 +36,29 @@ export async function getFreshToken() {
     return cachedToken
 }
 
+
+export async function getActiveDevice() {
+    const token = await getFreshToken()
+    console.log("token",token)
+    const r = await fetch('https://api.spotify.com/v1/me/player/devices', {
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await r.json()
+    if(data.devices[0]?.id){
+        var res = data
+    } else {
+        res = 0
+        console.error('No device found')
+    }
+    return res
+}
+
 // Étape 1 — Tu ouvres cette URL dans ton navigateur une seule fois
 router.get('/login', (req, res) => {
     const params = new URLSearchParams({
         response_type: 'code',
         client_id: process.env.SPOTIFY_CLIENT_ID,
-        scope: 'streaming user-read-email user-read-private user-modify-playback-state',
+        scope: 'streaming user-read-email user-read-private user-modify-playback-state user-read-playback-state',
         redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
     })
     res.redirect(`https://accounts.spotify.com/authorize?${params}`)

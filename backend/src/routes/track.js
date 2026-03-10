@@ -1,25 +1,39 @@
 import express from 'express'
 import Queue from '../entities/Queue.js'
 import { broadcastQueue } from '../websocket.js'
-import {getFreshToken} from "./auth.js";
+import {getActiveDevice, getFreshToken} from "./auth.js";
 
 const router = express.Router()
 
+
+
 async function spotifyQueue(uri) {
     const token = await getFreshToken()
-    await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(uri)}`, {
+    const activeDeviceId = await getActiveDevice()
+    console.log("token",token, activeDeviceId)
+    return await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(uri)}&device_id=${activeDeviceId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
     })
 }
 
+router.get('/devices', async (req, res) => {
+    const token = await getFreshToken()
+    console.log("token",token)
+    const r = await fetch('https://api.spotify.com/v1/me/player/devices', {
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await r.json()
+    res.send(data)
+})
+
 router.post('/add', async (req, res) => {
     const { track } = req.body
-    if (!track?.uri) return res.status(400).json({ error: 'Track invalide' })
+    if (!track) return res.status(400).json({ error: 'Track invalide' })
 
     try {
         Queue.add(track)
-        await spotifyQueue(track.uri)
+        await spotifyQueue(track)
         broadcastQueue(Queue.all)
         res.json({ success: true })
     } catch (err) {
@@ -30,12 +44,11 @@ router.post('/add', async (req, res) => {
 
 router.post('/addNext', async (req, res) => {
     const { track } = req.body
-    if (!track?.uri) return res.status(400).json({ error: 'Track invalide' })
+    if (!track) return res.status(400).json({ error: 'Track invalide' })
 
     try {
         Queue.addNext(track)
-        await spotifyQueue(track.uri)
-
+        await spotifyQueue(track)
         broadcastQueue(Queue.all)
         res.status(200).json({ success: true })
     } catch (err) {
