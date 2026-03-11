@@ -5,17 +5,8 @@ import {useQueueStore} from "@/stores/queueStore.js";
 
 
 const isPlaying = ref(false)
-//const volume = ref(70)
-//const progress = ref(35)
-//const currentTime = ref('1:12')
-//const duration = ref('3:24')
-const queue = useQueueStore()
-
-watch(() => queue.queue.length, () => {
-  console.log('Nouvelle longueur :')
-})
-
-const currentSong = computed(() => queue.queue.at(-1) ?? null)
+const store = useQueueStore()
+const currentSong = store.queue[0]
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }

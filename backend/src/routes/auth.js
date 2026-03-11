@@ -45,7 +45,7 @@ export async function getActiveDevice() {
     })
     const data = await r.json()
     if(data.devices[0]?.id){
-        var res = data
+        var res = data.devices[0]?.id
     } else {
         res = 0
         console.error('No device found')

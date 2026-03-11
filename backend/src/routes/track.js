@@ -11,6 +11,7 @@ async function spotifyQueue(uri) {
     const token = await getFreshToken()
     const activeDeviceId = await getActiveDevice()
     console.log("token",token, activeDeviceId)
+    console.log("idDevice", activeDeviceId)
     return await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(uri)}&device_id=${activeDeviceId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +34,7 @@ router.post('/add', async (req, res) => {
 
     try {
         Queue.add(track)
-        await spotifyQueue(track)
+        console.log(await spotifyQueue(track.uri))
         broadcastQueue(Queue.all)
         res.json({ success: true })
     } catch (err) {
@@ -48,7 +49,7 @@ router.post('/addNext', async (req, res) => {
 
     try {
         Queue.addNext(track)
-        await spotifyQueue(track)
+        console.log(await spotifyQueue(track.uri))
         broadcastQueue(Queue.all)
         res.status(200).json({ success: true })
     } catch (err) {

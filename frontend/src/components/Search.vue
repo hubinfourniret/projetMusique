@@ -85,11 +85,11 @@ function checkAdd(){
           <div v-if="openMenuId === track.id && isOpen === track.id"
                class="absolute right-full mr-2 top-1/2 -translate-y-1/2 flex flex-col gap-2"
           >
-            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="addNext(track.uri); isOpen = null;openMenuId = null;checkAdd()">
+            <button class="btn btn-ghost btn-circle btn-sm" @click.stop="addNext(track); isOpen = null;openMenuId = null;checkAdd()">
               <IconsList :debutList="true"/>
             </button>
 
-            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="add(track.uri); isOpen = null;openMenuId = null;checkAdd()">
+            <button class="btn btn-ghost btn-circle btn-sm"  @click.stop="add(track); isOpen = null;openMenuId = null;checkAdd()">
               <IconsList />
             </button>
 

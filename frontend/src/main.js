@@ -11,4 +11,5 @@ app.use(router)
 app.mount('#app')
 
 const queueStore = useQueueStore()
+app.use(createPinia())
 queueStore.connect()

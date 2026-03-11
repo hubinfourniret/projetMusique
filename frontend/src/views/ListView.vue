@@ -2,23 +2,15 @@
 import {computed, ref} from 'vue'
 import router from "@/router/index.js";
 import {useQueueStore} from "@/stores/queueStore.js";
+import PlayerProgress from "@/components/PlayerProgress.vue";
 
-
-
-
+const store = useQueueStore()
 const isPlaying = ref(false)
-//const volume = ref(70)
-const progress = ref(35)
-const currentTime = ref('1:12')
-const duration = ref('3:24')
-const queue = useQueueStore()
-
-const currentSong = computed(() => queue.queue.at(-1) ?? null)
+const currentSong = store.queue[0]
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
 function previous() { console.log('Précédent → Pi') }
-console.log("une queue",queue.queue)
 
 </script>
 
@@ -76,19 +68,7 @@ console.log("une queue",queue.queue)
     </div>
 
     <div class="bg-base-200 z-10 mt-4 rounded-t-2xl px-4 pt-4 pb-3">
-      <div class="mt-4 mb-4">
-        <div class="flex items-center gap-1 mb-1">
-          <span class="text-xs text-base-content/60">{{ currentTime }}</span>
-          <input
-              type="range"
-              min="0"
-              max="100"
-              v-model="progress"
-              class="range range-primary h-1 flex-1"
-          />
-          <span class="text-xs text-base-content/60">{{ duration }}</span>
-        </div>
-      </div>
+      <player-progress/>
 
       <div class="flex items-center justify-center gap-6 pb-6">
         <button class="btn btn-ghost btn-circle text-2xl" @click="previous">⏮</button>
