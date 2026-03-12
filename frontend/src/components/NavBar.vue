@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="navbar bg-base-100 shadow-md px-4 sticky top-0 z-50 flex items-center justify-center">
+  <div class="navbar bg-base-100 shadow-md px-4 z-50 flex items-center justify-center">
 
     <div class="flex-1">
       <span class="text-lg font-bold">Musique</span>

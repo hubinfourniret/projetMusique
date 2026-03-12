@@ -33,6 +33,7 @@ router.post('/add', async (req, res) => {
     if (!track) return res.status(400).json({ error: 'Track invalide' })
 
     try {
+        console.log('track', track)
         Queue.add(track)
         console.log(await spotifyQueue(track.uri))
         broadcastQueue(Queue.all)

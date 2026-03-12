@@ -28,5 +28,6 @@ export function broadcastStop() {
 }
 
 export function broadcastQueue(queue) {
+    console.log("queue", queue);
     broadcast({ type: 'QUEUE_UPDATE', queue })
 }

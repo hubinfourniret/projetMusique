@@ -6,7 +6,10 @@ import {useQueueStore} from "@/stores/queueStore.js";
 
 const isPlaying = ref(false)
 const store = useQueueStore()
-const currentSong = store.queue[0]
+
+const currentSong = computed(() => {
+  return store.currentTrack
+})
 
 function togglePlay() { isPlaying.value = !isPlaying.value }
 function next() { console.log('Suivant → Pi') }
@@ -14,11 +17,8 @@ function previous() { console.log('Précédent → Pi') }
 </script>
 
 <template>
-  <div class="w-full bg-base-100 border-t border-base-300">
-    <div class="px-3 py-2">
-
+  <div class="w-full bg-base-100 border-t border-base-300 px-3 py-2">
       <div class="flex items-center justify-between gap-2 ">
-
         <div class="flex items-center gap-2 flex-1 min-w-0" @click="router.push('/focus')">
           <div v-if="currentSong">
             <img
@@ -49,9 +49,7 @@ function previous() { console.log('Précédent → Pi') }
             ⏭
           </button>
         </div>
-
       </div>
-    </div>
   </div>
 </template>
 

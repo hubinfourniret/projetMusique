@@ -4,7 +4,7 @@ import {formatMs} from '../utils/utils.js'
 export const useQueueStore = defineStore('queue', {
     state: () => ({
         position: 0,
-        duration: 0,
+        duration: 400000,
         isPaused: false,
         queue: [],
         currentTrack: null,
@@ -26,10 +26,10 @@ export const useQueueStore = defineStore('queue', {
 
                 if (msg.type === 'QUEUE_UPDATE') {
                     console.log("msg", msg.queue)
-                    this.queue = msg.queue
+                    this.$patch({ queue: msg.queue })
+                    this.$patch({ currentTrack: msg.queue[0] ?? null})
                 }
 
-                // ← nouveau : sync état player
                 if (msg.type === 'PLAYER_STATE') {
                     this.syncState(msg.payload)
                 }
@@ -37,12 +37,13 @@ export const useQueueStore = defineStore('queue', {
         },
 
         syncState({ track, position, duration, paused }) {
-            this.position     = position
-            this.duration     = duration
-            this.isPaused     = paused
-            this.currentTrack = track
+            this.$patch({
+                position,
+                duration,
+                isPaused: paused,
+                currentTrack: track,
+            })
 
-            // Relance ou stoppe le timer local
             clearInterval(this._interval)
             if (!paused) {
                 this._interval = setInterval(() => {

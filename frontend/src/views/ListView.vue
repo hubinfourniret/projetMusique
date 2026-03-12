@@ -41,7 +41,7 @@ function previous() { console.log('Précédent → Pi') }
     <div class="flex-1 w-full overflow-y-auto px-4">
       <div class="flex w-full flex-col gap-2 pt-6 mb-4 p-4%">
         <div
-            v-for="song in queue.queue"
+            v-for="song in store.queue"
             :key="song.id"
             class="flex items-center gap-3 bg-base-100 rounded-xl p-3 mb-5"
         >
