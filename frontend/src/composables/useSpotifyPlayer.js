@@ -10,7 +10,7 @@ export function useSpotifyPlayer() {
     function init() {
         window.onSpotifyWebPlaybackSDKReady = async () => {
             player.value = new window.Spotify.Player({
-                name: 'Jukebox Appart 🎵',
+                name: 'Jukebox Appart',
                 getOAuthToken: async cb => {
                     const res = await fetch('http://localhost:3000/api/auth/token')
                     const { access_token } = await res.json()

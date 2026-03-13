@@ -1,5 +1,4 @@
 <script setup>
-import {computed, ref} from 'vue'
 import router from "@/router/index.js";
 import {useQueueStore} from "@/stores/queueStore.js";
 import PlayerBar from "@/components/PlayerBar.vue";
@@ -62,9 +61,7 @@ const store = useQueueStore()
     </div>
 
     <PlayerBar :full=true />
-
   </div>
-
 </template>
 
 

@@ -38,11 +38,11 @@ export async function getFreshToken() {
 
 export async function getActiveDevice() {
     const token = await getFreshToken()
-    console.log("token",token)
     const r = await fetch('https://api.spotify.com/v1/me/player/devices', {
         headers: { Authorization: `Bearer ${token}` },
     })
     const data = await r.json()
+    console.log("appareil spotify", data.devices)
     if(data.devices[0]?.id){
         var res = data.devices[0]?.id
     } else {

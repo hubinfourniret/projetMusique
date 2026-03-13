@@ -21,6 +21,7 @@ router.post('/add', async (req, res) => {
 
     try {
         console.log('track', track)
+        await spotifyQueue(track.uri)
         Queue.add(track)
         broadcastQueue(Queue.all)
         res.json({ success: true })
@@ -36,6 +37,7 @@ router.post('/addNext', async (req, res) => {
 
     try {
         Queue.addNext(track)
+        await spotifyQueue(track.uri)
         broadcastQueue(Queue.all)
         res.status(200).json({ success: true })
     } catch (err) {
