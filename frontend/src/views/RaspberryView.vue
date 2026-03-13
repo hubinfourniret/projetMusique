@@ -1,43 +1,14 @@
 <script setup>
 import { onMounted } from 'vue'
+import { useSpotifyPlayer } from '@/composables/useSpotifyPlayer.js'
 
-onMounted(async () => {
-  const res = await fetch('http://localhost:3000/auth/token')
-  const { access_token } = await res.json()
+const { init } = useSpotifyPlayer()
 
-  window.onSpotifyWebPlaybackSDKReady = () => {
-    const player = new Spotify.Player({
-      name: 'Raspberry Player',
-      getOAuthToken: cb => cb(access_token),
-      volume: 0.8
-    })
-
-    player.connect()
-
-    const ws = new WebSocket('ws://localhost:3000')
-
-    ws.onmessage = (event) => {
-      const { type, song } = JSON.parse(event.data)
-
-      if (type === 'PLAY') {
-        fetch(`https://api.spotify.com/v1/me/player/play`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${access_token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ uris: [`spotify:track:${song.id}`] })
-        })
-      }
-
-      if (type === 'NEXT') player.nextTrack()
-      if (type === 'PAUSE') player.pause()
-      if (type === 'RESUME') player.resume()
-    }
-  }
-})
+onMounted(() => init())
 </script>
 
 <template>
-  <div></div>
+  <div class="flex items-center justify-center h-screen bg-base-200">
+    <p class="text-base-content/40 text-sm">Raspberry Player actif</p>
+  </div>
 </template>

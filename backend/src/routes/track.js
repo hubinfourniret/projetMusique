@@ -1,32 +1,19 @@
 import express from 'express'
 import Queue from '../entities/Queue.js'
 import { broadcastQueue } from '../websocket.js'
-import {getActiveDevice, getFreshToken} from "./auth.js";
+import { getFreshToken, getActiveDevice } from "./auth.js";
+//import { getActiveDevice } from './player.js'
 
 const router = express.Router()
-
-
 
 async function spotifyQueue(uri) {
     const token = await getFreshToken()
     const activeDeviceId = await getActiveDevice()
-    console.log("token",token, activeDeviceId)
-    console.log("idDevice", activeDeviceId)
     return await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(uri)}&device_id=${activeDeviceId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
     })
 }
-
-router.get('/devices', async (req, res) => {
-    const token = await getFreshToken()
-    console.log("token",token)
-    const r = await fetch('https://api.spotify.com/v1/me/player/devices', {
-        headers: { Authorization: `Bearer ${token}` },
-    })
-    const data = await r.json()
-    res.send(data)
-})
 
 router.post('/add', async (req, res) => {
     const { track } = req.body
@@ -35,7 +22,6 @@ router.post('/add', async (req, res) => {
     try {
         console.log('track', track)
         Queue.add(track)
-        console.log(await spotifyQueue(track.uri))
         broadcastQueue(Queue.all)
         res.json({ success: true })
     } catch (err) {
@@ -50,7 +36,6 @@ router.post('/addNext', async (req, res) => {
 
     try {
         Queue.addNext(track)
-        console.log(await spotifyQueue(track.uri))
         broadcastQueue(Queue.all)
         res.status(200).json({ success: true })
     } catch (err) {

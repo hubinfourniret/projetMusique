@@ -35,3 +35,27 @@ export async function removeTrack(trackId) {
     if (!res.ok) throw new Error('Erreur suppression')
     return res.json()
 }
+
+export async function next() {
+    const res = await fetch(`${API_URL}/api/player/next`, {
+        method: 'POST',
+    })
+    if (!res.ok) throw new Error('Erreur suppression')
+    return res.json()
+}
+
+export async function prev() {
+    const res = await fetch(`${API_URL}/api/player/previous`, {
+        method: 'POST',
+    })
+    if (!res.ok) throw new Error('Erreur suppression')
+    return res.json()
+}
+
+export async function toggle() {
+    const res = await fetch(`${API_URL}/api/player/toggle`, {
+        method: 'POST',
+    })
+    if (!res.ok) throw new Error('Erreur suppression')
+    return res.json()
+}

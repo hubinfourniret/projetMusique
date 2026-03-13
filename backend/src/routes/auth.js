@@ -36,7 +36,6 @@ export async function getFreshToken() {
     return cachedToken
 }
 
-
 export async function getActiveDevice() {
     const token = await getFreshToken()
     console.log("token",token)

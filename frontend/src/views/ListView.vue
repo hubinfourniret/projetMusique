@@ -2,15 +2,9 @@
 import {computed, ref} from 'vue'
 import router from "@/router/index.js";
 import {useQueueStore} from "@/stores/queueStore.js";
-import PlayerProgress from "@/components/PlayerProgress.vue";
+import PlayerBar from "@/components/PlayerBar.vue";
 
 const store = useQueueStore()
-const isPlaying = ref(false)
-const currentSong = store.queue[0]
-
-function togglePlay() { isPlaying.value = !isPlaying.value }
-function next() { console.log('Suivant → Pi') }
-function previous() { console.log('Précédent → Pi') }
 
 </script>
 
@@ -22,17 +16,17 @@ function previous() { console.log('Précédent → Pi') }
       </div>
       <div class="flex-1 flex">
         <img
-            v-if="currentSong"
-            :src="currentSong.cover"
-            :alt="currentSong.title"
+            v-if="store.currentTrack"
+            :src="store.currentTrack.cover"
+            :alt="store.currentTrack.title"
             class="w-36 h-36 md:w-34 md:h-34 rounded-xl object-cover shadow-lg pt-6 pl-6 gap-2 "
         />
-        <div v-if="currentSong" class="pt-6 pl-6 gap-2 min-w-0">
+        <div v-if="store.currentTrack" class="pt-6 pl-6 gap-2 min-w-0">
           <p class="font-semibold text-lg truncate">
-            {{ currentSong.title }}
+            {{ store.currentTrack.title }}
           </p>
           <p class="text-sm text-base-content/70 truncate">
-            {{ currentSong.artist }}
+            {{ store.currentTrack.artist }}
           </p>
         </div>
       </div>
@@ -67,17 +61,7 @@ function previous() { console.log('Précédent → Pi') }
       </div>
     </div>
 
-    <div class="bg-base-200 z-10 mt-4 rounded-t-2xl px-4 pt-4 pb-3">
-      <player-progress/>
-
-      <div class="flex items-center justify-center gap-6 pb-6">
-        <button class="btn btn-ghost btn-circle text-2xl" @click="previous">⏮</button>
-        <button class="btn btn-primary btn-circle btn-lg text-3xl" @click="togglePlay">
-          {{ isPlaying ? '⏸' : '▶' }}
-        </button>
-        <button class="btn btn-ghost btn-circle text-2xl" @click="next">⏭</button>
-      </div>
-    </div>
+    <PlayerBar :full=true />
 
   </div>
 
