@@ -38,11 +38,11 @@ const store = useQueueStore()
         </div>
 
         <div class="flex items-center gap-1 shrink-0">
-          <button class="btn btn-ghost btn-sm btn-circle text-lg" @click="prev">⏮</button>
+          <button class="btn btn-ghost btn-sm btn-circle text-lg" @click="prev"><font-awesome-icon :icon="['fas', 'backward-step']"/></button>
           <button class="btn btn-primary btn-sm btn-circle text-lg" @click="toggle">
-            {{ store.isPaused ? '▶' : '⏸' }}
+            <font-awesome-icon :icon="['fas', store.isPaused ? 'play': 'pause']"/>
           </button>
-          <button class="btn btn-ghost btn-sm btn-circle text-lg" @click="next">⏭</button>
+          <button class="btn btn-ghost btn-sm btn-circle text-lg" @click="next"><font-awesome-icon :icon="['fas', 'forward-step']" /></button>
         </div>
       </div>
     </template>
@@ -54,11 +54,11 @@ const store = useQueueStore()
 
       <!-- Boutons -->
       <div class="flex items-center justify-center gap-6 pb-6">
-        <button class="btn btn-ghost btn-circle text-2xl" @click="prev">⏮</button>
+        <button class="btn btn-ghost btn-circle text-2xl" @click="prev"><font-awesome-icon :icon="['fas', 'backward-step']"/></button>
         <button class="btn btn-primary btn-circle btn-lg text-3xl" @click="toggle">
-          {{ store.isPaused ? '▶' : '⏸' }}
+          <font-awesome-icon :icon="['fas', store.isPaused ? 'play': 'pause']"/>
         </button>
-        <button class="btn btn-ghost btn-circle text-2xl" @click="next">⏭</button>
+        <button class="btn btn-ghost btn-circle text-2xl" @click="next"><font-awesome-icon :icon="['fas', 'forward-step']" /></button>
 
         <!-- Bouton queue si list = true -->
         <div v-if="list" class="flex items-center gap-3 shrink-0 fab fab-flower">
