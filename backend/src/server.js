@@ -18,7 +18,7 @@ app.use('/api/search', searchRouter)
 app.use('/api/votes', votesRouter);
 app.use('/api/track', trackRouter);
 app.use('/api/player', playerRouter);
-app.use('/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 
 const server = app.listen(PORT, () => {

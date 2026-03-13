@@ -28,7 +28,7 @@ export const useQueueStore = defineStore('queue', {
                     console.log("msg", msg.queue)
                     this.$patch({ queue: msg.queue })
                     this.$patch({ currentTrack: msg.queue[0] ?? null})
-                    this.$patch({ duration: msg.queue[0].duration ?? 0})
+                    this.$patch({ duration: msg.queue[0]?.duration ?? 0})
                 }
 
                 if (msg.type === 'PLAYER_STATE') {
