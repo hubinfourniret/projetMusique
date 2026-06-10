@@ -20,11 +20,16 @@ router.post('/add', async (req, res) => {
     if (!track) return res.status(400).json({ error: 'Track invalide' })
 
     try {
-        console.log('track', track)
-        await spotifyQueue(track.uri)
-        Queue.add(track)
-        broadcastQueue(Queue.all)
-        res.json({ success: true })
+        spotifyQueue(track.uri).then((response)=> {
+            console.log("response", response)
+            if(response.status === 200) {
+                Queue.addNext(track)
+                broadcastQueue(Queue.all)
+                res.status(200).json({ success: true })
+            } else {
+                res.status(500).json({ error: "Erreur du côté spotify" })
+            }
+        })
     } catch (err) {
         console.error(err)
         res.status(500).json({ error: "Erreur lors de l'ajout" })
@@ -36,10 +41,16 @@ router.post('/addNext', async (req, res) => {
     if (!track) return res.status(400).json({ error: 'Track invalide' })
 
     try {
-        Queue.addNext(track)
-        await spotifyQueue(track.uri)
-        broadcastQueue(Queue.all)
-        res.status(200).json({ success: true })
+        spotifyQueue(track.uri).then((response)=> {
+            console.log("response", response)
+            if(response.status === 200) {
+                Queue.addNext(track)
+                broadcastQueue(Queue.all)
+                res.status(200).json({ success: true })
+            } else {
+                res.status(500).json({ error: "Erreur du côté spotify" })
+            }
+        })
     } catch (err) {
         console.error(err)
         res.status(500).json({ error: "Erreur lors de l'ajout" })
